@@ -4,13 +4,17 @@ import cv2
 import numpy as np
 
 class RTSPCube:
-    def __init__(self, width, height, rtsp_urls):
+    def __init__(self, width, height, rtsp_urls, speed):
         self.width = width
         self.height = height
         self.cube_size = min(width, height) // 4
         self.rotation = [0, 0, 0]
-        self.position = Vector3(width // 2, height // 2, 0)
-        self.speed = Vector3(2, 2, 0)
+        
+        # Set initial position to bottom right
+        self.position = Vector3(width - self.cube_size, height - self.cube_size, 0)
+        
+        # Set speed as a 2D vector
+        self.speed = Vector3(-abs(speed[0]), -abs(speed[1]), 0)  # Negative to move up-left initially
 
         # Initialize RTSP streams
         self.streams = []
@@ -48,9 +52,11 @@ class RTSPCube:
 
         # Update position (bouncing effect)
         self.position += self.speed
-        if self.position.x <= self.cube_size or self.position.x >= self.width - self.cube_size:
+        
+        # Check boundaries and reverse direction if needed
+        if self.position.x <= 0 or self.position.x >= self.width - self.cube_size * 2:
             self.speed.x *= -1
-        if self.position.y <= self.cube_size or self.position.y >= self.height - self.cube_size:
+        if self.position.y <= 0 or self.position.y >= self.height - self.cube_size * 2:
             self.speed.y *= -1
 
         # Update RTSP frames

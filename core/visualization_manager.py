@@ -1,8 +1,8 @@
 import importlib
 import os
 import pygame
-from dotenv import load_dotenv
-from config import MODE_SWITCH_TIME, RTSP_STREAMS, TOP_SCROLL_SPEED, BOTTOM_SCROLL_SPEED
+
+from config import MODE_SWITCH_TIME, RTSP_STREAMS, TOP_SCROLL_SPEED, BOTTOM_SCROLL_SPEED, CUBE_SPEED_Y, CUBE_SPEED_X
 from ui.top_scroller import TopScroller
 from ui.bottom_scroller import BottomScroller
 from ui.rtsp_cube import RTSPCube
@@ -60,7 +60,12 @@ class VisualizationManager:
             
             # Filter out None values in case some URLs are not provided
             rtsp_urls = [url for url in rtsp_urls if url is not None]
-            self.rtsp_cube = RTSPCube(screen.get_width(), screen.get_height(), rtsp_urls)
+            # Get cube speed from environment variables, default to (2, 2) if not set
+            cube_speed_x = float(os.getenv('CUBE_SPEED_X', 2))
+            cube_speed_y = float(os.getenv('CUBE_SPEED_Y', 2))
+            
+            self.rtsp_cube = RTSPCube(screen.get_width(), screen.get_height(), rtsp_urls, (cube_speed_x, cube_speed_y))
+
 
         self.rtsp_cube.update(fft_data)
         self.rtsp_cube.draw(screen)
