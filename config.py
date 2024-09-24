@@ -36,6 +36,7 @@ RTSP_STREAMS = [
 
 # Add this new configuration
 RSS_FEED_URLS = os.getenv('RSS_FEED_URLS',"").split("|")
+print(RSS_FEED_URLS)
 
 CLOCK_BOUNCE_SPEED = 10
 
