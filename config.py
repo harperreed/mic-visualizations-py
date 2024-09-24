@@ -30,7 +30,7 @@ FREQ_RANGE = (os.getenv('FREQ_RANGE_START', 50), os.getenv('FREQ_RANGE_END', 100
 
 # Visualization settings
 NUM_PARTICLES = os.getenv('NUM_PARTICLES', 100)
-MODE_SWITCH_TIME = os.getenv('MODE_SWITCH_TIME', 5000)  # milliseconds
+MODE_SWITCH_TIME = os.getenv('MODE_SWITCH_TIME', 10000)  # milliseconds
 
 RTSP_STREAMS = [
                 os.getenv('RTSP_URL_1'),
