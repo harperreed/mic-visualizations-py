@@ -13,13 +13,13 @@ class VisualizationManager:
         self.visualizations = self.load_visualizations()
         self.current_index = 0
         self.last_switch_time = pygame.time.get_ticks()
-        self.top_scroller = TopScroller(
-            self.screen.get_width(), 
-            self.screen.get_height(),
-            RSS_FEED_URLS, 
-            TOP_SCROLL_SPEED,
-            TOP_SCROLL_FONT_SIZE
-        )
+        # self.top_scroller = TopScroller(
+        #     self.screen.get_width(), 
+        #     self.screen.get_height(),
+        #     RSS_FEED_URLS, 
+        #     TOP_SCROLL_SPEED,
+        #     TOP_SCROLL_FONT_SIZE
+        # )
         self.bottom_scroller = BottomScroller(self.screen.get_width(), self.screen.get_height(), "Stay tuned for more visualizations!", BOTTOM_SCROLL_SPEED)
         self.rtsp_cube = RTSPCube(self.screen.get_width(), self.screen.get_height(), [url for url in RTSP_STREAMS if url], (CUBE_SPEED_X, CUBE_SPEED_Y))
 
@@ -40,7 +40,7 @@ class VisualizationManager:
             self.next_visualization()
             self.last_switch_time = current_time
 
-        await self.top_scroller.update(fft_data)
+        # await self.top_scroller.update(fft_data)
         self.bottom_scroller.update(fft_data)
         self.rtsp_cube.update(fft_data)
 
@@ -51,12 +51,13 @@ class VisualizationManager:
         current_vis = list(self.visualizations.values())[self.current_index]
         current_vis(screen, fft_data, screen.get_width(), screen.get_height())
 
-        self.top_scroller.draw(screen)
+        # self.top_scroller.draw(screen)
         self.bottom_scroller.draw(screen)
         self.rtsp_cube.draw(screen)
 
     async def start(self):
-        await self.top_scroller.start()
+        # await self.top_scroller.start()
+        pass
 
     def cleanup(self):
         if self.rtsp_cube:

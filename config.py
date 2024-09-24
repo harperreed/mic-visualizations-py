@@ -12,12 +12,11 @@ load_dotenv()
 
 # Screen settings
 
-print(os.getenv('FULLSCREEN', 'True'))
-FULLSCREEN = os.getenv('FULLSCREEN', 'True').lower() == 'true'
-print(FULLSCREEN)
 
-WIDTH = int(os.getenv('WIDTH', 1920))
-HEIGHT = int(os.getenv('HEIGHT', 1080))
+
+
+FULLSCREEN = os.getenv('FULLSCREEN', 'True').lower() == 'true'
+
 
 # Color settings
 BACKGROUND_COLOR = (0, 0, 0)
@@ -64,14 +63,8 @@ pygame.font.init()
 
 
 if FULLSCREEN:
-    infoObject = pygame.display.Info()
-    # WIDTH, HEIGHT = infoObject.current_w, infoObject.current_h
-    logging.debug(f"Setting fullscreen mode: {WIDTH}x{HEIGHT}")
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+   infoObject = pygame.display.Info()
+   WIDTH, HEIGHT = infoObject.current_w, infoObject.current_h
 else:
-    logging.debug(f"Setting windowed mode: {WIDTH}x{HEIGHT}")
-    screen = pygame.display.set_mode((int(WIDTH), int(HEIGHT)))
-
-logging.debug("Display mode set successfully")
-
-pygame.display.set_caption("ProjectM-style Music Visualizer")
+    WIDTH = int(os.getenv('WIDTH', 1920))
+    HEIGHT = int(os.getenv('HEIGHT', 1080))

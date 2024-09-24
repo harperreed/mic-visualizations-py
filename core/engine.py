@@ -10,7 +10,11 @@ import asyncio
 class Engine:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
+        if config.FULLSCREEN:
+            self.screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
+        
         pygame.display.set_caption("Music Visualizer")
 
         self.audio_handler = AudioHandler()
@@ -40,6 +44,9 @@ class Engine:
                     self.vis_manager.next_visualization()
                 elif event.key == pygame.K_ESCAPE:
                     self.running = False
+                elif event.key == pygame.K_f:  # Toggle fullscreen
+                    config.FULLSCREEN = not config.FULLSCREEN
+                    pygame.display.toggle_fullscreen()
 
     async def update(self):
         audio_data, fft_data = self.audio_handler.get_audio_data()
