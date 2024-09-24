@@ -70,8 +70,8 @@ TOP_SCROLL_FONT_SIZE = int(os.getenv('TOP_SCROLL_FONT_SIZE', 180))
 
 BOTTOM_SCROLL_SPEED = int(os.getenv('BOTTOM_SCROLL_SPEED', 8))
 
-CUBE_SPEED_X = float(os.getenv('CUBE_SPEED_X', 2))
-CUBE_SPEED_Y = float(os.getenv('CUBE_SPEED_Y', 2))
+CUBE_SPEED_X = float(os.getenv('CUBE_SPEED_X', 5))
+CUBE_SPEED_Y = float(os.getenv('CUBE_SPEED_Y', 5))
 
 # Initialize Pygame
 pygame.init()

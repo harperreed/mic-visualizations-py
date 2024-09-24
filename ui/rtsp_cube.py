@@ -7,7 +7,7 @@ class RTSPCube:
     def __init__(self, width, height, rtsp_urls, speed):
         self.width = width
         self.height = height
-        self.cube_size = min(width, height) // 4
+        self.cube_size = min(width, height) // 8
         self.rotation = [0, 0, 0]
         
         # Set initial position to bottom right
