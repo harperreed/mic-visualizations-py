@@ -1,7 +1,11 @@
 import argparse
+from dotenv import load_dotenv
 from core.engine import Engine
 
 def main():
+    # Load environment variables
+    load_dotenv()
+
     parser = argparse.ArgumentParser(description="Run the music visualizer")
     parser.add_argument("--mode", help="Specify a visualization mode")
     args = parser.parse_args()

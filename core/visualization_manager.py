@@ -1,7 +1,8 @@
 import importlib
 import os
 import pygame
-from config import MODE_SWITCH_TIME
+from dotenv import load_dotenv
+from config import MODE_SWITCH_TIME, RTSP_STREAMS, TOP_SCROLL_SPEED, BOTTOM_SCROLL_SPEED
 from ui.top_scroller import TopScroller
 from ui.bottom_scroller import BottomScroller
 from ui.rtsp_cube import RTSPCube
@@ -14,6 +15,8 @@ class VisualizationManager:
         self.top_scroller = None
         self.bottom_scroller = None
         self.rtsp_cube = None
+
+ 
 
     def load_visualizations(self):
         visualizations = {}
@@ -42,9 +45,9 @@ class VisualizationManager:
 
         # Initialize and draw the top and bottom scrollers
         if self.top_scroller is None:
-            self.top_scroller = TopScroller(screen.get_width(), screen.get_height(), "Breaking News: Music is awesome! More at 11.")
+            self.top_scroller = TopScroller(screen.get_width(), screen.get_height(), "Breaking News: Music is awesome! More at 11.", TOP_SCROLL_SPEED)
         if self.bottom_scroller is None:
-            self.bottom_scroller = BottomScroller(screen.get_width(), screen.get_height(), "Stay tuned for more visualizations! Don't touch that dial!")
+            self.bottom_scroller = BottomScroller(screen.get_width(), screen.get_height(), "Stay tuned for more visualizations! Don't touch that dial!", BOTTOM_SCROLL_SPEED)
 
         self.top_scroller.update(fft_data)
         self.bottom_scroller.update(fft_data)
@@ -53,14 +56,10 @@ class VisualizationManager:
 
         # Initialize and draw the RTSP cube
         if self.rtsp_cube is None:
-            rtsp_urls = [
-               
-                # "rtsp://your_rtsp_url_2",
-                # "rtsp://your_rtsp_url_3",
-                # "rtsp://your_rtsp_url_4",
-                # "rtsp://your_rtsp_url_5",
-                # "rtsp://your_rtsp_url_6"
-            ]
+            rtsp_urls = RTSP_STREAMS
+            
+            # Filter out None values in case some URLs are not provided
+            rtsp_urls = [url for url in rtsp_urls if url is not None]
             self.rtsp_cube = RTSPCube(screen.get_width(), screen.get_height(), rtsp_urls)
 
         self.rtsp_cube.update(fft_data)

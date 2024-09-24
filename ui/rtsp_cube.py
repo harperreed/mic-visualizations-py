@@ -2,31 +2,42 @@ import pygame
 from pygame.math import Vector3
 import cv2
 import numpy as np
-from OpenGL.GL import *
-from OpenGL.GLU import *
 
 class RTSPCube:
     def __init__(self, width, height, rtsp_urls):
         self.width = width
         self.height = height
-        self.rtsp_urls = rtsp_urls
         self.cube_size = min(width, height) // 4
         self.rotation = [0, 0, 0]
         self.position = Vector3(width // 2, height // 2, 0)
         self.speed = Vector3(2, 2, 0)
 
-        # Initialize OpenGL
-        pygame.display.set_mode((width, height), pygame.OPENGL | pygame.DOUBLEBUF)
-        glEnable(GL_DEPTH_TEST)
-        glMatrixMode(GL_PROJECTION)
-        gluPerspective(45, (width / height), 0.1, 50.0)
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-        glTranslatef(0.0, 0.0, -5)
-
         # Initialize RTSP streams
-        self.streams = [cv2.VideoCapture(url) for url in rtsp_urls]
-        self.textures = [glGenTextures(1) for _ in rtsp_urls]
+        self.streams = []
+        self.textures = []
+        for url in rtsp_urls:
+            stream = cv2.VideoCapture(url)
+            if stream.isOpened():
+                self.streams.append(stream)
+                ret, frame = stream.read()
+                if ret:
+                    self.textures.append(pygame.image.frombuffer(
+                        cv2.cvtColor(frame, cv2.COLOR_BGR2RGB).tobytes(), 
+                        frame.shape[1::-1], "RGB"))
+                else:
+                    self.textures.append(None)
+            else:
+                print(f"Failed to open RTSP stream: {url}")
+
+        # Fallback colors for sides without streams
+        self.colors = [
+            (255, 0, 0),    # Red
+            (0, 255, 0),    # Green
+            (0, 0, 255),    # Blue
+            (255, 255, 0),  # Yellow
+            (255, 0, 255),  # Magenta
+            (0, 255, 255),  # Cyan
+        ]
 
     def update(self, fft_data):
         # Update rotation based on audio data
@@ -42,43 +53,67 @@ class RTSPCube:
         if self.position.y <= self.cube_size or self.position.y >= self.height - self.cube_size:
             self.speed.y *= -1
 
-    def draw(self, screen):
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity()
-        glTranslatef(0.0, 0.0, -5)
-
-        # Apply rotation and position
-        glRotatef(self.rotation[0], 1, 0, 0)
-        glRotatef(self.rotation[1], 0, 1, 0)
-        glRotatef(self.rotation[2], 0, 0, 1)
-        glTranslatef(self.position.x - self.width // 2, self.position.y - self.height // 2, 0)
-
-        # Draw cube with RTSP streams as textures
+        # Update RTSP frames
         for i, stream in enumerate(self.streams):
             ret, frame = stream.read()
             if ret:
-                # Convert frame to OpenGL texture
-                frame = cv2.flip(frame, 0)
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                glBindTexture(GL_TEXTURE_2D, self.textures[i])
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame.shape[1], frame.shape[0], 0, GL_RGB, GL_UNSIGNED_BYTE, frame)
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+                self.textures[i] = pygame.image.frombuffer(
+                    cv2.cvtColor(frame, cv2.COLOR_BGR2RGB).tobytes(), 
+                    frame.shape[1::-1], "RGB")
 
-                # Draw cube face
-                glEnable(GL_TEXTURE_2D)
-                glBindTexture(GL_TEXTURE_2D, self.textures[i])
-                glBegin(GL_QUADS)
-                glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0,  1.0)
-                glTexCoord2f(1.0, 0.0); glVertex3f( 1.0, -1.0,  1.0)
-                glTexCoord2f(1.0, 1.0); glVertex3f( 1.0,  1.0,  1.0)
-                glTexCoord2f(0.0, 1.0); glVertex3f(-1.0,  1.0,  1.0)
-                glEnd()
-                glDisable(GL_TEXTURE_2D)
+    def draw(self, screen):
+        cube_surface = pygame.Surface((self.cube_size * 2, self.cube_size * 2), pygame.SRCALPHA)
+        cube_surface.fill((0, 0, 0, 0))
 
-            glRotatef(90, 0, 1, 0)  # Rotate to next face
+        # Define cube vertices
+        vertices = [
+            (-1, -1, -1), (1, -1, -1), (1, 1, -1), (-1, 1, -1),
+            (-1, -1, 1), (1, -1, 1), (1, 1, 1), (-1, 1, 1)
+        ]
 
-        pygame.display.flip()
+        # Define cube faces
+        faces = [
+            (0, 1, 2, 3), (1, 5, 6, 2), (5, 4, 7, 6),
+            (4, 0, 3, 7), (3, 2, 6, 7), (4, 5, 1, 0)
+        ]
+
+        # Rotate vertices
+        rotated = []
+        for x, y, z in vertices:
+            # Rotate around x-axis
+            y = y * np.cos(np.radians(self.rotation[0])) - z * np.sin(np.radians(self.rotation[0]))
+            z = y * np.sin(np.radians(self.rotation[0])) + z * np.cos(np.radians(self.rotation[0]))
+            # Rotate around y-axis
+            x = x * np.cos(np.radians(self.rotation[1])) + z * np.sin(np.radians(self.rotation[1]))
+            z = -x * np.sin(np.radians(self.rotation[1])) + z * np.cos(np.radians(self.rotation[1]))
+            # Rotate around z-axis
+            x = x * np.cos(np.radians(self.rotation[2])) - y * np.sin(np.radians(self.rotation[2]))
+            y = x * np.sin(np.radians(self.rotation[2])) + y * np.cos(np.radians(self.rotation[2]))
+            rotated.append((x, y, z))
+
+        # Sort faces by z-order (painter's algorithm)
+        face_list = []
+        for i, face in enumerate(faces):
+            z = sum(rotated[v][2] for v in face)
+            face_list.append((z, i))
+        face_list.sort(reverse=True)
+
+        # Draw faces
+        for _, i in face_list:
+            points = [((rotated[v][0] * self.cube_size + self.cube_size), 
+                       (rotated[v][1] * self.cube_size + self.cube_size)) for v in faces[i]]
+            
+            if i < len(self.textures) and self.textures[i]:
+                # Draw textured face
+                scaled_texture = pygame.transform.scale(self.textures[i], (self.cube_size * 2, self.cube_size * 2))
+                pygame.draw.polygon(cube_surface, (255, 255, 255), points)
+                cube_surface.blit(scaled_texture, (0, 0), special_flags=pygame.BLEND_MULT)
+            else:
+                # Draw colored face
+                pygame.draw.polygon(cube_surface, self.colors[i], points)
+
+        # Blit cube onto main screen
+        screen.blit(cube_surface, (self.position.x - self.cube_size, self.position.y - self.cube_size))
 
     def cleanup(self):
         for stream in self.streams:
