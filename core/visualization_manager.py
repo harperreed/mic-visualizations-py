@@ -4,6 +4,7 @@ import pygame
 from config import MODE_SWITCH_TIME
 from ui.top_scroller import TopScroller
 from ui.bottom_scroller import BottomScroller
+from ui.rtsp_cube import RTSPCube
 
 class VisualizationManager:
     def __init__(self):
@@ -12,6 +13,7 @@ class VisualizationManager:
         self.last_switch_time = pygame.time.get_ticks()
         self.top_scroller = None
         self.bottom_scroller = None
+        self.rtsp_cube = None
 
     def load_visualizations(self):
         visualizations = {}
@@ -48,3 +50,22 @@ class VisualizationManager:
         self.bottom_scroller.update(fft_data)
         self.top_scroller.draw(screen)
         self.bottom_scroller.draw(screen)
+
+        # Initialize and draw the RTSP cube
+        if self.rtsp_cube is None:
+            rtsp_urls = [
+               
+                # "rtsp://your_rtsp_url_2",
+                # "rtsp://your_rtsp_url_3",
+                # "rtsp://your_rtsp_url_4",
+                # "rtsp://your_rtsp_url_5",
+                # "rtsp://your_rtsp_url_6"
+            ]
+            self.rtsp_cube = RTSPCube(screen.get_width(), screen.get_height(), rtsp_urls)
+
+        self.rtsp_cube.update(fft_data)
+        self.rtsp_cube.draw(screen)
+
+    def cleanup(self):
+        if self.rtsp_cube:
+            self.rtsp_cube.cleanup()
