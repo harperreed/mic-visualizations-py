@@ -13,7 +13,7 @@ class BottomScroller:
         self.font = pygame.font.Font(None, 120)
         self.text_surface = self.font.render(self.text, True, (255, 255, 255))
         self.text_rect = self.text_surface.get_rect()
-        self.text_rect.y = self.height - 80  # Position at the bottom
+        self.text_rect.y = self.height - 90  # Position at the bottom
         self.text_rect.x = self.width
 
     def update(self, fft_data):

@@ -6,7 +6,7 @@ import os
 load_dotenv()
 
 # Screen settings
-FULLSCREEN = os.getenv('FULLSCREEN', True)
+FULLSCREEN = True #os.getenv('FULLSCREEN', True)
 WIDTH = os.getenv('WIDTH', 1920)
 HEIGHT = os.getenv('HEIGHT', 1080)
 

@@ -7,7 +7,7 @@ class TopScroller:
         self.width = width
         self.height = height
         self.speed = speed
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(None, 120)
         
         self.rss_handler = RSSFeedHandler(rss_urls)
         self.news_items = []
