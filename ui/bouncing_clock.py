@@ -8,8 +8,8 @@ class BouncingClock:
         self.color = config.CLOCK_COLOR
         self.x = config.WIDTH // 2
         self.y = config.HEIGHT // 2
-        self.dx = 2
-        self.dy = 2
+        self.dx = 5  # Increased speed
+        self.dy = 5  # Increased speed
 
     def update(self):
         self.x += self.dx
@@ -24,6 +24,6 @@ class BouncingClock:
             self.dy *= -1
 
     def draw(self, screen):
-        current_time = datetime.now().strftime("%H:%M:%S")
+        current_time = datetime.now().strftime("%I:%M:%S %p")
         text = self.font.render(current_time, True, self.color)
         screen.blit(text, (self.x, self.y))

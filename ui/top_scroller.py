@@ -3,11 +3,11 @@ import asyncio
 from ui.rss_feed_handler import RSSFeedHandler
 
 class TopScroller:
-    def __init__(self, width, height, rss_urls, speed=2):
+    def __init__(self, width, height, rss_urls, speed=2, font_size=36):
         self.width = width
         self.height = height
         self.speed = speed
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(None, font_size)
         
         self.rss_handler = RSSFeedHandler(rss_urls)
         self.news_items = []

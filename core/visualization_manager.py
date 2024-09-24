@@ -2,7 +2,7 @@ import importlib
 import os
 import pygame
 import asyncio
-from config import MODE_SWITCH_TIME, RTSP_STREAMS, TOP_SCROLL_SPEED, BOTTOM_SCROLL_SPEED, CUBE_SPEED_Y, CUBE_SPEED_X, RSS_FEED_URLS
+from config import MODE_SWITCH_TIME, RTSP_STREAMS, TOP_SCROLL_SPEED, TOP_SCROLL_FONT_SIZE, BOTTOM_SCROLL_SPEED, CUBE_SPEED_Y, CUBE_SPEED_X, RSS_FEED_URLS
 from ui.top_scroller import TopScroller
 from ui.bottom_scroller import BottomScroller
 from ui.rtsp_cube import RTSPCube
@@ -13,7 +13,13 @@ class VisualizationManager:
         self.visualizations = self.load_visualizations()
         self.current_index = 0
         self.last_switch_time = pygame.time.get_ticks()
-        self.top_scroller = TopScroller(self.screen.get_width(), self.screen.get_height(), RSS_FEED_URLS, TOP_SCROLL_SPEED)
+        self.top_scroller = TopScroller(
+            self.screen.get_width(), 
+            self.screen.get_height(),
+            RSS_FEED_URLS, 
+            TOP_SCROLL_SPEED,
+            TOP_SCROLL_FONT_SIZE
+        )
         self.bottom_scroller = BottomScroller(self.screen.get_width(), self.screen.get_height(), "Stay tuned for more visualizations!", BOTTOM_SCROLL_SPEED)
         self.rtsp_cube = RTSPCube(self.screen.get_width(), self.screen.get_height(), [url for url in RTSP_STREAMS if url], (CUBE_SPEED_X, CUBE_SPEED_Y))
 

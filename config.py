@@ -1,14 +1,22 @@
 import pygame
 from dotenv import load_dotenv
 import os
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 # Load environment variables
 load_dotenv()
 
 # Screen settings
-FULLSCREEN = os.getenv('FULLSCREEN', True)
-WIDTH = os.getenv('WIDTH', 1920)
-HEIGHT = os.getenv('HEIGHT', 1080)
+print(os.getenv('FULLSCREEN', 'True'))
+FULLSCREEN = os.getenv('FULLSCREEN', 'True').lower() == 'true'
+print(FULLSCREEN)
+
+WIDTH = int(os.getenv('WIDTH', 1920))
+HEIGHT = int(os.getenv('HEIGHT', 1080))
 
 # Color settings
 BACKGROUND_COLOR = (0, 0, 0)
@@ -36,14 +44,15 @@ RTSP_STREAMS = [
 
 # Add this new configuration
 RSS_FEED_URLS = os.getenv('RSS_FEED_URLS',"").split("|")
-print(RSS_FEED_URLS)
 
-CLOCK_BOUNCE_SPEED = 10
+CLOCK_BOUNCE_SPEED = int(os.getenv('CLOCK_BOUNCE_SPEED', 10))
 
-RTSP_CUBE_BOUNCE_SPEED = os.getenv('RTSP_CUBE_BOUNCE_SPEED', 10)
+RTSP_CUBE_BOUNCE_SPEED = int(os.getenv('RTSP_CUBE_BOUNCE_SPEED', 10))
 
-TOP_SCROLL_SPEED = os.getenv('RTSP_CUBE_BOUNCE_SPEED', 2)
-BOTTOM_SCROLL_SPEED = os.getenv('RTSP_CUBE_BOUNCE_SPEED', 8)
+TOP_SCROLL_SPEED = int(os.getenv('TOP_SCROLL_SPEED', 20))
+TOP_SCROLL_FONT_SIZE = int(os.getenv('TOP_SCROLL_FONT_SIZE', 180))
+
+BOTTOM_SCROLL_SPEED = int(os.getenv('BOTTOM_SCROLL_SPEED', 8))
 
 CUBE_SPEED_X = float(os.getenv('CUBE_SPEED_X', 2))
 CUBE_SPEED_Y = float(os.getenv('CUBE_SPEED_Y', 2))
@@ -52,11 +61,16 @@ CUBE_SPEED_Y = float(os.getenv('CUBE_SPEED_Y', 2))
 pygame.init()
 pygame.font.init()
 
+
 if FULLSCREEN:
     infoObject = pygame.display.Info()
     WIDTH, HEIGHT = infoObject.current_w, infoObject.current_h
+    logging.debug(f"Setting fullscreen mode: {WIDTH}x{HEIGHT}")
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 else:
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    logging.debug(f"Setting windowed mode: {WIDTH}x{HEIGHT}")
+    screen = pygame.display.set_mode((int(WIDTH), int(HEIGHT)))
+
+logging.debug("Display mode set successfully")
 
 pygame.display.set_caption("ProjectM-style Music Visualizer")
