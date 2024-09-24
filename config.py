@@ -34,6 +34,9 @@ RTSP_STREAMS = [
             ]
 
 
+# Add this new configuration
+RSS_FEED_URLS = os.getenv('RSS_FEED_URLS',"").split("|")
+
 CLOCK_BOUNCE_SPEED = 10
 
 RTSP_CUBE_BOUNCE_SPEED = os.getenv('RTSP_CUBE_BOUNCE_SPEED', 10)
@@ -41,8 +44,8 @@ RTSP_CUBE_BOUNCE_SPEED = os.getenv('RTSP_CUBE_BOUNCE_SPEED', 10)
 TOP_SCROLL_SPEED = os.getenv('RTSP_CUBE_BOUNCE_SPEED', 2)
 BOTTOM_SCROLL_SPEED = os.getenv('RTSP_CUBE_BOUNCE_SPEED', 8)
 
-CUBE_SPEED_X = os.getenv('CUBE_SPEED_X', 2)
-CUBE_SPEED_Y = os.getenv('CUBE_SPEED_Y', 2)
+CUBE_SPEED_X = float(os.getenv('CUBE_SPEED_X', 2))
+CUBE_SPEED_Y = float(os.getenv('CUBE_SPEED_Y', 2))
 
 # Initialize Pygame
 pygame.init()

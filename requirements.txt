@@ -4,3 +4,5 @@ sounddevice==0.4.6
 opencv-python==4.5.5.64
 PyOpenGL==3.1.6
 python-dotenv==1.0.0
+feedparser
+aiohttp

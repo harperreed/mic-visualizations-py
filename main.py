@@ -1,9 +1,9 @@
 import argparse
 from dotenv import load_dotenv
 from core.engine import Engine
+import asyncio
 
-def main():
-    # Load environment variables
+async def main():
     load_dotenv()
 
     parser = argparse.ArgumentParser(description="Run the music visualizer")
@@ -19,7 +19,8 @@ def main():
             print("Available modes:", ", ".join(engine.vis_manager.visualizations.keys()))
             return
 
-    engine.run()
+    await engine.vis_manager.start()
+    await engine.run()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

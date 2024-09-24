@@ -5,27 +5,33 @@ from ui.particle import Particle
 from ui.bouncing_clock import BouncingClock
 from core.visualization_manager import VisualizationManager
 from utils.pygame_utils import add_glow_effect
+import asyncio
 
 class Engine:
     def __init__(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
+        pygame.display.set_caption("Music Visualizer")
+
         self.audio_handler = AudioHandler()
         self.particles = [Particle() for _ in range(config.NUM_PARTICLES)]
         self.bouncing_clock = BouncingClock()
-        self.vis_manager = VisualizationManager()
+        self.vis_manager = VisualizationManager(self.screen)
         self.clock = pygame.time.Clock()
         self.running = True
 
-    def run(self):
+    async def run(self):
         try:
             while self.running:
-                self.handle_events()
-                self.update()
+                await self.handle_events()
+                await self.update()
                 self.render()
+                await asyncio.sleep(0)  # Allow other async tasks to run
                 self.clock.tick(60)
         finally:
             self.cleanup()
 
-    def handle_events(self):
+    async def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -35,21 +41,21 @@ class Engine:
                 elif event.key == pygame.K_ESCAPE:
                     self.running = False
 
-    def update(self):
+    async def update(self):
         audio_data, fft_data = self.audio_handler.get_audio_data()
         for particle in self.particles:
             particle.update(fft_data)
         self.bouncing_clock.update()
-        self.vis_manager.update()
+        await self.vis_manager.update(fft_data)
 
     def render(self):
-        config.screen.fill(config.BACKGROUND_COLOR)
+        self.screen.fill(config.BACKGROUND_COLOR)
         audio_data, fft_data = self.audio_handler.get_audio_data()
-        self.vis_manager.draw(config.screen, fft_data)
+        self.vis_manager.draw(self.screen, fft_data)
         for particle in self.particles:
-            particle.draw(config.screen)
-        add_glow_effect(config.screen)
-        self.bouncing_clock.draw(config.screen)
+            particle.draw(self.screen)
+        add_glow_effect(self.screen)
+        self.bouncing_clock.draw(self.screen)
         pygame.display.flip()
 
     def cleanup(self):
