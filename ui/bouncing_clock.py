@@ -4,18 +4,18 @@ import config
 
 class BouncingClock:
     def __init__(self):
-        self.font = pygame.font.Font(None, 240)
+        self.font = pygame.font.Font(None, config.CLOCK_FONT_SIZE)
         self.color = config.CLOCK_COLOR
         self.x = config.WIDTH // 2
         self.y = config.HEIGHT // 2
-        self.dx = 5  # Increased speed
-        self.dy = 5  # Increased speed
+        self.dx = config.CLOCK_BOUNCE_SPEED  # Increased speed
+        self.dy = config.CLOCK_BOUNCE_SPEED  # Increased speed
 
     def update(self):
         self.x += self.dx
         self.y += self.dy
 
-        text = self.font.render(datetime.now().strftime("%H:%M:%S"), True, self.color)
+        text = self.font.render(datetime.now().strftime(config.CLOCK_TIME_FORMAT), True, self.color)
         text_rect = text.get_rect()
 
         if self.x <= 0 or self.x + text_rect.width >= config.WIDTH:

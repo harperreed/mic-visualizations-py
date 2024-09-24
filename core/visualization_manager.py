@@ -2,7 +2,7 @@ import importlib
 import os
 import pygame
 import asyncio
-from config import MODE_SWITCH_TIME, RTSP_STREAMS, TOP_SCROLL_SPEED, TOP_SCROLL_FONT_SIZE, BOTTOM_SCROLL_SPEED, CUBE_SPEED_Y, CUBE_SPEED_X, RSS_FEED_URLS
+from config import MODE_SWITCH_TIME, CLOCK_BOUNCE_SPEED, RTSP_STREAMS, TOP_SCROLL_SPEED, TOP_SCROLL_FONT_SIZE, BOTTOM_SCROLL_SPEED, CUBE_SPEED_Y, CUBE_SPEED_X, RSS_FEED_URLS
 from ui.top_scroller import TopScroller
 from ui.bottom_scroller import BottomScroller
 from ui.rtsp_cube import RTSPCube

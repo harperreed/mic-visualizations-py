@@ -12,25 +12,21 @@ load_dotenv()
 
 # Screen settings
 
-
-
-
 FULLSCREEN = os.getenv('FULLSCREEN', 'True').lower() == 'true'
-
 
 # Color settings
 BACKGROUND_COLOR = (0, 0, 0)
 CLOCK_COLOR = (255, 255, 255)
 
 # Audio settings
-CHUNK = os.getenv('NUM_PARTICLES', 1024)
-CHANNELS = os.getenv('NUM_PARTICLES', 1)
-RATE = os.getenv('RATE', 44100)
-FREQ_RANGE = (os.getenv('FREQ_RANGE_START', 50), os.getenv('FREQ_RANGE_END', 1000))
+CHUNK = int(os.getenv('NUM_PARTICLES', 1024))
+CHANNELS = int(os.getenv('NUM_PARTICLES', 1))
+RATE = int(os.getenv('RATE', 44100))
+FREQ_RANGE = (int(os.getenv('FREQ_RANGE_START', 50)), int(os.getenv('FREQ_RANGE_END', 1000)))
 
 # Visualization settings
-NUM_PARTICLES = os.getenv('NUM_PARTICLES', 100)
-MODE_SWITCH_TIME = os.getenv('MODE_SWITCH_TIME', 10000)  # milliseconds
+NUM_PARTICLES = int(os.getenv('NUM_PARTICLES', 100))
+MODE_SWITCH_TIME = int(os.getenv('MODE_SWITCH_TIME', 10000))  # milliseconds
 
 RTSP_STREAMS = [
                 os.getenv('RTSP_URL_1'),
@@ -46,6 +42,8 @@ RTSP_STREAMS = [
 RSS_FEED_URLS = os.getenv('RSS_FEED_URLS',"").split("|")
 
 CLOCK_BOUNCE_SPEED = int(os.getenv('CLOCK_BOUNCE_SPEED', 10))
+CLOCK_TIME_FORMAT = os.getenv('CLOCK_TIME_FORMAT', "%-I:%M %p")
+CLOCK_FONT_SIZE = int(os.getenv('CLOCK_BOUNCE_FONT_SIZE', 120))
 
 RTSP_CUBE_BOUNCE_SPEED = int(os.getenv('RTSP_CUBE_BOUNCE_SPEED', 10))
 
