@@ -11,22 +11,13 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 load_dotenv()
 
 # Screen settings
-<<<<<<< HEAD
+
 print(os.getenv('FULLSCREEN', 'True'))
 FULLSCREEN = os.getenv('FULLSCREEN', 'True').lower() == 'true'
 print(FULLSCREEN)
 
 WIDTH = int(os.getenv('WIDTH', 1920))
 HEIGHT = int(os.getenv('HEIGHT', 1080))
-||||||| ccddbac
-FULLSCREEN = os.getenv('FULLSCREEN', True)
-WIDTH = os.getenv('WIDTH', 1920)
-HEIGHT = os.getenv('HEIGHT', 1080)
-=======
-FULLSCREEN = True #os.getenv('FULLSCREEN', True)
-WIDTH = os.getenv('WIDTH', 1920)
-HEIGHT = os.getenv('HEIGHT', 1080)
->>>>>>> 2c6ebda397cc92ed768e16f53e76981fa00831b5
 
 # Color settings
 BACKGROUND_COLOR = (0, 0, 0)
