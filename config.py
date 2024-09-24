@@ -16,7 +16,7 @@ FULLSCREEN = os.getenv('FULLSCREEN', 'True').lower() == 'true'
 
 # Color settings
 BACKGROUND_COLOR = (0, 0, 0)
-CLOCK_COLOR = (255, 255, 255)
+
 
 # Audio settings
 CHUNK = int(os.getenv('NUM_PARTICLES', 1024))
@@ -44,6 +44,24 @@ RSS_FEED_URLS = os.getenv('RSS_FEED_URLS',"").split("|")
 CLOCK_BOUNCE_SPEED = int(os.getenv('CLOCK_BOUNCE_SPEED', 10))
 CLOCK_TIME_FORMAT = os.getenv('CLOCK_TIME_FORMAT', "%-I:%M %p")
 CLOCK_FONT_SIZE = int(os.getenv('CLOCK_BOUNCE_FONT_SIZE', 120))
+CLOCK_COLOR = (255, 255, 255)
+CLOCK_COLORS = [
+    (255, 0, 0),    # Red
+    (0, 255, 0),    # Green
+    (0, 0, 255),    # Blue
+    (255, 255, 0),  # Yellow
+    (255, 0, 255),  # Magenta
+    (0, 255, 255),  # Cyan
+    (255, 128, 0),  # Orange
+    (128, 0, 255),  # Purple
+    (0, 128, 128),  # Teal
+    (255, 192, 203),# Pink
+    (128, 128, 0),  # Olive
+    (139, 69, 19),  # Saddle Brown
+    (0, 191, 255),  # Deep Sky Blue
+    (255, 215, 0),  # Gold
+    (50, 205, 50),  # Lime Green
+]
 
 RTSP_CUBE_BOUNCE_SPEED = int(os.getenv('RTSP_CUBE_BOUNCE_SPEED', 10))
 
