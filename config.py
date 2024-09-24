@@ -65,7 +65,7 @@ pygame.font.init()
 
 if FULLSCREEN:
     infoObject = pygame.display.Info()
-    WIDTH, HEIGHT = infoObject.current_w, infoObject.current_h
+    # WIDTH, HEIGHT = infoObject.current_w, infoObject.current_h
     logging.debug(f"Setting fullscreen mode: {WIDTH}x{HEIGHT}")
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 else:

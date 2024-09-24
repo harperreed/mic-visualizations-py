@@ -2,6 +2,8 @@ import argparse
 from dotenv import load_dotenv
 from core.engine import Engine
 import asyncio
+import pygame
+import config
 
 async def main():
     load_dotenv()
@@ -20,6 +22,10 @@ async def main():
             return
 
     await engine.vis_manager.start()
+    
+    # Force fullscreen mode
+    pygame.display.toggle_fullscreen()
+    
     await engine.run()
 
 if __name__ == "__main__":
