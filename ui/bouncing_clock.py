@@ -4,7 +4,7 @@ import config
 
 class BouncingClock:
     def __init__(self):
-        self.font = pygame.font.Font(None, 120)
+        self.font = pygame.font.Font(None, 240)
         self.color = config.CLOCK_COLOR
         self.x = config.WIDTH // 2
         self.y = config.HEIGHT // 2
