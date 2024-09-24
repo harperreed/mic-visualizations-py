@@ -11,10 +11,10 @@ class RTSPCube:
         self.rotation = [0, 0, 0]
         
         # Set initial position to bottom right
-        self.position = Vector3(width - self.cube_size, height - self.cube_size, 0)
+        self.position = Vector3(width - self.cube_size * 2, height - self.cube_size * 2, 0)
         
         # Set speed as a 2D vector
-        self.speed = Vector3(-abs(speed[0]), -abs(speed[1]), 0)  # Negative to move up-left initially
+        self.speed = Vector3(speed[0], speed[1], 0)
 
         # Initialize RTSP streams
         self.streams = []
@@ -51,13 +51,18 @@ class RTSPCube:
             self.rotation[2] += max(fft_data) * 2
 
         # Update position (bouncing effect)
-        self.position += self.speed
+        new_position = self.position + self.speed
         
         # Check boundaries and reverse direction if needed
-        if self.position.x <= 0 or self.position.x >= self.width - self.cube_size * 2:
+        if new_position.x <= 0 or new_position.x >= self.width - self.cube_size * 2:
             self.speed.x *= -1
-        if self.position.y <= 0 or self.position.y >= self.height - self.cube_size * 2:
+            new_position.x = max(0, min(new_position.x, self.width - self.cube_size * 2))
+        
+        if new_position.y <= 0 or new_position.y >= self.height - self.cube_size * 2:
             self.speed.y *= -1
+            new_position.y = max(0, min(new_position.y, self.height - self.cube_size * 2))
+        
+        self.position = new_position
 
         # Update RTSP frames
         for i, stream in enumerate(self.streams):
@@ -119,7 +124,7 @@ class RTSPCube:
                 pygame.draw.polygon(cube_surface, self.colors[i], points)
 
         # Blit cube onto main screen
-        screen.blit(cube_surface, (self.position.x - self.cube_size, self.position.y - self.cube_size))
+        screen.blit(cube_surface, (int(self.position.x), int(self.position.y)))
 
     def cleanup(self):
         for stream in self.streams:
