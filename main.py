@@ -24,7 +24,7 @@ async def main():
     await engine.vis_manager.start()
     
     # Force fullscreen mode
-    pygame.display.toggle_fullscreen()
+    # pygame.display.toggle_fullscreen()
     
     await engine.run()
 
