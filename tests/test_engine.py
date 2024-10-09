@@ -1,5 +1,11 @@
 import unittest
 from unittest.mock import patch, MagicMock
+import sys
+
+# Mock sounddevice before importing Engine
+mock_sounddevice = MagicMock()
+sys.modules["sounddevice"] = mock_sounddevice
+
 from core.engine import Engine
 import pygame
 import config
