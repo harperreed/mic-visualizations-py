@@ -59,3 +59,30 @@ To get started with this project, follow the instructions below:
 - `star_field.py`: Simulates a field of stars, enhancing visuals based on audio inputs.
 
 Explore each script and unleash your creativity! Should you have any questions or suggestions, please do not hesitate to open an issue or reach out. Happy coding! 🚀✨
+
+## Running Tests
+
+To run the unit tests for this project, follow these steps:
+
+1. Ensure you're in the project root directory.
+2. Run the following command:
+
+   ```bash
+   python -m unittest discover tests
+   ```
+
+This command will discover and run all the tests in the `tests/` directory.
+
+For more detailed test output, you can use the verbose flag:
+
+   ```bash
+   python -m unittest discover -v tests
+   ```
+
+If you want to run a specific test file, you can do so like this:
+
+   ```bash
+   python -m unittest tests/test_engine.py
+   ```
+
+Remember to run the tests whenever you make changes to ensure everything is working as expected!
